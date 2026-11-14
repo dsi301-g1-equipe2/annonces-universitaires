@@ -1,0 +1,63 @@
+name: Backend - build and deploy to Azure
+
+# Runs on every merge (push) to main that touches the backend or this workflow.
+# "workflow_dispatch" adds a manual "Run workflow" button in the Actions tab.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AZURE_WEBAPP_NAME: grp1-annonces-api
+  NODE_VERSION: "24.x"
+  BACKEND_DIR: backend
+  HEALTH_URL: https://grp1-annonces-api-drc9cdemhpftduaw.austriaeast-01.azurewebsites.net/health
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.BACKEND_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: npm ci
+
+      - name: Build (only if a build script exists)
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: npm run build --if-present
+
+      - name: Test (only if a test script exists)
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: npm test --if-present
+
+      - name: Remove dev dependencies before deploying
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: npm prune --omit=dev
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.BACKEND_DIR }}
+
+      - name: Smoke test /health
+        run: |
+          curl --fail --silent --show-error \
+            --retry 10 --retry-delay 10 --retry-all-errors \
+            "$HEALTH_URL"
