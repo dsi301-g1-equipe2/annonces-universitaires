@@ -2,21 +2,21 @@ name: Frontend - Pages
 
 on:
   pull_request:
-    paths: ['frontend/**']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
   push:
     branches: [main]
-    paths: ['frontend/**']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
@@ -31,7 +31,7 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write
