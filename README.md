@@ -37,4 +37,23 @@ Structure du dépôt :
 ├── conception/    # Documents de conception (backlog, diagrammes, maquettes)
 └── README.md
 ```
+## Lancer le projet
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/dsi301-g1-equipe2/annonces-universitaires.git
+cd annonces-universitaires
+
+# Back-end et back office (http://localhost:3000)
+cd backend
+copy .env.example .env      # puis renseigner MONGODB_URI dans .env
+npm install
+npm start
+
+# Front office (http://localhost:4200), dans un autre terminal
+cd frontend
+npm install
+ng serve
+```
+
 
