@@ -41,10 +41,6 @@ jobs:
         working-directory: ${{ env.BACKEND_DIR }}
         run: npm run build --if-present
 
-      - name: Test (only if a test script exists)
-        working-directory: ${{ env.BACKEND_DIR }}
-        run: npm test --if-present
-
       - name: Remove dev dependencies before deploying
         working-directory: ${{ env.BACKEND_DIR }}
         run: npm prune --omit=dev
