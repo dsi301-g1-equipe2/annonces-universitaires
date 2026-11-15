@@ -1,16 +1,17 @@
+const { fakeAuth, requireRole } = require('./middlewares/auth');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const connectDB = require('./config/db');
 const app = express();
 
 app.use(cors({
   origin: ['https://dsi301-g1-equipe2.github.io', 'http://localhost:4200']
 }));
+app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI, { dbName: 'annonces' })
-  .then(() => console.log('MongoDB connecté'))
-  .catch(err => console.error('Erreur MongoDB:', err.message));
+connectDB();
 
 const Info = mongoose.model('Info', new mongoose.Schema({ nom: String }));
 
@@ -25,6 +26,8 @@ app.get('/api/info', async (req, res) => {
     res.status(500).json({ erreur: 'Base de données injoignable' });
   }
 });
+
+app.use('/api', require('./routes/testRoute'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Serveur sur le port ${port}`));
