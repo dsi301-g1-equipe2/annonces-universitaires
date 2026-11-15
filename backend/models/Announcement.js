@@ -10,11 +10,11 @@ const announcementSchema = new mongoose.Schema({
   titre: { type: String, required: true, trim: true },
   description: { type: String, required: true },
   categorie: { type: ObjectId, ref: 'Category', required: true },
-  auteur: { type: ObjectId, ref: 'User', required: true },
+  auteur: { type: ObjectId, ref: 'Etudiant', required: true },
   statut: { type: String, enum: ['EN_ATTENTE', 'PUBLIEE', 'REFUSEE'], default: 'EN_ATTENTE' },
   medias: [mediaSchema],
   motifRefus: { type: String },
-  traitePar: { type: ObjectId, ref: 'User' },
+  traitePar: { type: ObjectId, ref: 'Agent' },
   dateTraitement: { type: Date },
 }, { timestamps: true });
 

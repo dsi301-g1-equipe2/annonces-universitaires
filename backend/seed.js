@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const { User, Category, Announcement, Comment } = require('./models');
+const { Etudiant, Agent, Category, Announcement, Comment } = require('./models');
 
 async function seed() {
   const uri = process.env.MONGODB_URI || '';
@@ -9,13 +9,12 @@ async function seed() {
     process.exit(1);
   }
   await mongoose.connect(uri, { dbName: 'annonces' });
-  for (const M of [User, Category, Announcement, Comment]) await M.deleteMany({});
-
-  const [agent, etu1, etu2] = await User.create([
-    { nom: 'Agent', prenom: 'Test', email: 'agent@test.tn', motDePasse: 'test', role: 'agent' },
-    { nom: 'Etudiant', prenom: 'Un', email: 'etu1@test.tn', motDePasse: 'test', role: 'etudiant' },
-    { nom: 'Etudiant', prenom: 'Deux', email: 'etu2@test.tn', motDePasse: 'test', role: 'etudiant' },
-  ]);
+for (const M of [Etudiant, Agent, Category, Announcement, Comment]) await M.deleteMany({});
+const agent = await Agent.create({ nom: 'Agent', prenom: 'Test', email: 'agent@test.tn', motDePasse: 'test' });
+const [etu1, etu2] = await Etudiant.create([
+  { nom: 'Etudiant', prenom: 'Un', emailInstitutionnel: 'etu1@isetch.tn', motDePasse: 'test', statut: 'ACTIF' },
+  { nom: 'Etudiant', prenom: 'Deux', emailInstitutionnel: 'etu2@isetch.tn', motDePasse: 'test', statut: 'ACTIF' },
+]);
   const cats = await Category.create([{ nom: 'Objets perdus' }, { nom: 'Clubs' }, { nom: 'Ventes' }]);
   const now = new Date();
   const [a1] = await Announcement.create([
