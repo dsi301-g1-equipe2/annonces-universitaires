@@ -5,11 +5,13 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const app = express();
+const path = require('path'); 
 
 app.use(cors({
   origin: ['https://dsi301-g1-equipe2.github.io', 'http://localhost:4200']
 }));
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); 
 
 connectDB();
 

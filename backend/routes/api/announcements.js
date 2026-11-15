@@ -2,11 +2,8 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 const { Announcement, Category } = require('../../models');
 
-// fakeAuth + requireRole('etudiant') sont déjà appliqués dans routes/index.js
-
-// POST /api/announcements : créer une annonce (US18, US16, US26)
 router.post('/', async (req, res) => {
-  const { titre, description, categorie, date } = req.body ?? {};
+  const { titre, description, categorie } = req.body ?? {};
   const erreurs = [];
 
   if (typeof titre !== 'string' || !titre.trim()) erreurs.push('Le titre est obligatoire');
@@ -19,9 +16,6 @@ router.post('/', async (req, res) => {
     erreurs.push('La description doit faire entre 10 et 2000 caractères');
   }
 
-  if (!date) erreurs.push('La date est obligatoire');
-  else if (Number.isNaN(new Date(date).getTime())) erreurs.push('La date est invalide');
-
   if (!categorie) erreurs.push('La catégorie est obligatoire');
   else if (!mongoose.isValidObjectId(categorie) || !(await Category.exists({ _id: categorie }))) {
     erreurs.push("Cette catégorie n'existe pas");
@@ -33,9 +27,8 @@ router.post('/', async (req, res) => {
     titre: titre.trim(),
     description: description.trim(),
     categorie,
-    date: new Date(date),
-    auteur: req.user._id,   // l'auteur vient du "token" (fakeAuth), jamais du body
-    statut: 'EN_ATTENTE',   // forcé, même si le body envoie autre chose
+    auteur: req.user._id,   
+    statut: 'EN_ATTENTE',   
   });
 
   res.status(201).json(annonce);
