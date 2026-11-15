@@ -14,7 +14,7 @@ app.use(express.json());
 connectDB();
 
 const Info = mongoose.model('Info', new mongoose.Schema({ nom: String }));
-
+app.use(require('./routes'));
 app.get('/health', (req, res) => res.send('ok'));
 
 app.get('/api/info', async (req, res) => {
@@ -27,7 +27,7 @@ app.get('/api/info', async (req, res) => {
   }
 });
 
-app.use('/api', require('./routes/testRoute'));
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Serveur sur le port ${port}`));

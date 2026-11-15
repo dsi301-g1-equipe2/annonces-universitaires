@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { User } = require('../models');
+const { Etudiant, Agent } = require('../models');
 
 async function fakeAuth(req, res, next) {
   const id = req.header('x-user-id');
@@ -7,9 +7,15 @@ async function fakeAuth(req, res, next) {
     return res.status(401).json({ erreur: 'Utilisateur non identifié' });
   }
   try {
-    const user = await User.findById(id);
+    let user = await Etudiant.findById(id);
+    let role = 'etudiant';
+    if (!user) {
+      user = await Agent.findById(id);
+      role = 'agent';
+    }
     if (!user) return res.status(401).json({ erreur: 'Utilisateur inconnu' });
     req.user = user;
+    req.role = role;
     next();
   } catch (err) {
     next(err);
@@ -17,7 +23,7 @@ async function fakeAuth(req, res, next) {
 }
 
 const requireRole = (...roles) => (req, res, next) => {
-  if (!req.user || !roles.includes(req.user.role)) {
+  if (!req.role || !roles.includes(req.role)) {
     return res.status(403).json({ erreur: 'Accès interdit' });
   }
   next();
