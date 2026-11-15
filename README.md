@@ -1,55 +1,59 @@
-# [Nom du projet] – Plateforme d'annonces universitaires
+# Site d'annonces de la faculté
 
-Plateforme web permettant aux étudiants de publier et consulter des annonces au sein de la faculté, avec modération par les agents.
-
-## Technologies
-
-- **Backend** : Node.js + Express
-- **Back office** (agents) : EJS, servi par le backend
-- **Frontend** (étudiants) : Angular
-
-## Structure du dépôt
-
-- `backend/` : API Express et back office EJS
-- `frontend/` : application Angular (à venir)
-
-## Installation
-
-### Prérequis
-
-- Node.js (version LTS)
-- Git
-
-### Backend
-
-```bash
-cd backend
-npm install
-```
-
-Copier le fichier `.env.example` en `.env` puis renseigner les variables.
-
-### Frontend
-
-Instructions à venir.
-
-## Organisation du travail
-
-- Le backlog est géré avec les **Issues** et le tableau **GitHub Projects**.
-- Chaque issue est réalisée sur une **branche dédiée** créée à partir de `main`.
-- Il est **interdit de pousser directement sur `main`**.
-- Une fois la fonctionnalité terminée, on ouvre une **Pull Request** vers `main`, en mentionnant l'issue (`Closes #numéro`).
-- Une PR n'est fusionnée qu'après **validation par la reviewer** ([ton nom]).
-
-### Conventions
-
-- Branches : `feature/nom-court` ou `fix/nom-court`
-- Commits : `feat: ...`, `fix: ...`, `docs: ...`
+Plateforme web permettant aux étudiants de la faculté de publier et consulter des annonces (clubs, objets perdus, événements, etc.). Les annonces sont modérées par des agents administratifs avant leur publication.
 
 ## Équipe
 
-- [Nom 1]
-- [Nom 2]
-- [Nom 3]
-- [Nom 4]
-- [Nom 5]
+- Eya Benali
+- Arwa Barnat
+- Anissa Ben Brahim
+- Maram Ben Khemis
+- Khadija Chakroun
+
+## Stack utilisée
+
+- Front office (étudiants) : Angular
+- Back office (agents) : Node.js, EJS
+- Back-end / API : Node.js
+- Base de données : MongoDB
+
+## Architecture
+
+Le projet est composé de deux interfaces qui s'appuient sur un back-end commun en Node.js :
+
+| Partie | Utilisateurs | Technologie |
+|--------|--------------|-------------|
+| Front office | Étudiants | Angular |
+| Back office | Agents | Node.js avec EJS |
+| API et logique métier | Les deux | Node.js |
+| Base de données | Les deux | MongoDB |
+
+Structure du dépôt :
+
+```
+.
+├── backend/       # API Node.js et back office EJS (agents)
+├── frontend/      # Application Angular (étudiants)
+├── conception/    # Documents de conception (backlog, diagrammes, maquettes)
+└── README.md
+```
+## Lancer le projet
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/dsi301-g1-equipe2/annonces-universitaires.git
+cd annonces-universitaires
+
+# Back-end et back office (http://localhost:3000)
+cd backend
+copy .env.example .env      # puis renseigner MONGODB_URI dans .env
+npm install
+npm start
+
+# Front office (http://localhost:4200), dans un autre terminal
+cd frontend
+npm install
+ng serve
+```
+
+

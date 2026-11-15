@@ -1,0 +1,7 @@
+@if (info()) {
+  <h1>{{ info()!.nom }}</h1>
+} @else if (erreur()) {
+  <p>Impossible de joindre le backend.</p>
+} @else {
+  <p>Chargement...</p>
+}
