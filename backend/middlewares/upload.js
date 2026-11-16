@@ -3,8 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 
-// Dossier où les fichiers sont enregistrés (à ignorer dans Git)
-const UPLOAD_DIR = path.join(__dirname, '..', 'uploads', 'medias');
+// Dossier où les fichiers sont enregistrés :
+// - en local : backend/uploads/medias (valeur par défaut, ignorée par Git)
+// - sur Azure : /home/uploads/medias, donné par la variable UPLOAD_DIR
+//   (hors du code, pour ne pas être effacé à chaque déploiement)
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads', 'medias');
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 // Formats autorisés -> type attendu par le modèle Announcement (PHOTO / VIDEO)

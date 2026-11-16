@@ -5,8 +5,6 @@ const path = require('path');
 const { Announcement } = require('../../models');
 const { uploadMedias, TYPES, UPLOAD_DIR } = require('../../middlewares/upload');
 
-// Charge l'annonce et vérifie que l'utilisateur connecté en est l'auteur.
-// Placé AVANT Multer : si ce n'est pas l'auteur, aucun fichier n'est écrit.
 async function chargerMonAnnonce(req, res, next) {
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(404).json({ erreur: 'Annonce introuvable' });
