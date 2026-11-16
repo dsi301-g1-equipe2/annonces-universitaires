@@ -1,8 +1,8 @@
-const { fakeAuth, requireRole } = require('./middlewares/auth');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { UPLOAD_DIR } = require('./middlewares/upload'); // après dotenv : lit UPLOAD_DIR
 const connectDB = require('./config/db');
 const app = express();
 
@@ -10,6 +10,10 @@ app.use(cors({
   origin: ['https://dsi301-g1-equipe2.github.io', 'http://localhost:4200']
 }));
 app.use(express.json());
+
+// Rend accessibles les médias envoyés : /uploads/medias/xxx.png
+// Le dossier vient de upload.js (UPLOAD_DIR) : le même en local et sur Azure
+app.use('/uploads/medias', express.static(UPLOAD_DIR));
 
 connectDB();
 
