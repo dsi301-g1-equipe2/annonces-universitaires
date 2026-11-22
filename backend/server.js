@@ -28,14 +28,10 @@ app.use('/', require('./src/routes/web'));
 app.use(notFound);
 app.use(erreur);
 
-connecterDb()
-  .then(() => {
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => console.log(`Serveur sur http://localhost:${port}`));
-  })
-  .catch((err) => {
-    console.error('Connexion MongoDB impossible :', err.message);
-    process.exit(1);
-  });
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Serveur sur http://localhost:${port}`));
 
+connecterDb().catch((err) => {
+  console.error('Connexion MongoDB impossible :', err.message);
+});
 
