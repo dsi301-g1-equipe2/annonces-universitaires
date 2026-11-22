@@ -9,7 +9,7 @@ fs.readdirSync(dossierModeles)
   .forEach((f) => require(path.join(dossierModeles, f)));
 
 async function connecterDb() {
-  await mongoose.connect(process.env.MONGO_URI);
+ await mongoose.connect(process.env.MONGO_URI || process.env.MONGODB_URI);
   console.log('MongoDB connecté');
 
   for (const Model of Object.values(mongoose.models)) {
