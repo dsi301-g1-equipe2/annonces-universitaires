@@ -1,0 +1,49 @@
+<h1>Inscription</h1>
+
+@if (succes()) {
+  <p>Inscription envoyée. Un agent doit valider votre compte avant que vous puissiez vous connecter.</p>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="envoyer()">
+    <label>Nom
+      <input formControlName="nom" />
+    </label>
+    @if (form.controls.nom.touched && form.controls.nom.invalid) {
+      <small>Le nom est obligatoire.</small>
+    }
+
+    <label>Prénom
+      <input formControlName="prenom" />
+    </label>
+    @if (form.controls.prenom.touched && form.controls.prenom.invalid) {
+      <small>Le prénom est obligatoire.</small>
+    }
+
+    <label>E-mail institutionnel
+      <input type="email" formControlName="emailInstitutionnel" placeholder="prenom.nom@isetch.tn" />
+    </label>
+    @if (form.controls.emailInstitutionnel.touched && form.controls.emailInstitutionnel.invalid) {
+      <small>Utilisez votre e-mail institutionnel (&#64;isetch.tn).</small>
+    }
+
+    <label>Mot de passe
+      <input type="password" formControlName="motDePasse" />
+    </label>
+    @if (form.controls.motDePasse.touched && form.controls.motDePasse.invalid) {
+      <small>Au moins 8 caractères.</small>
+    }
+
+    <label>Carte étudiante (JPG ou PNG, 2 Mo maximum)
+      <input type="file" accept="image/jpeg,image/png" (change)="choisirCarte($event)" />
+    </label>
+    @if (erreurCarte()) {
+      <small>{{ erreurCarte() }}</small>
+    }
+
+    @if (erreur()) {
+      <p class="erreur">{{ erreur() }}</p>    }
+
+    <button type="submit" [disabled]="envoi()">
+      {{ envoi() ? 'Envoi...' : "S'inscrire" }}
+    </button>
+  </form>
+}
