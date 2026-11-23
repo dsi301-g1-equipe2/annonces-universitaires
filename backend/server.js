@@ -6,9 +6,13 @@ const notFound = require('./src/middlewares/notFound');
 const erreur = require('./src/middlewares/erreur');
 const cookieParser = require('cookie-parser');
 const securite = require('./src/middlewares/securite');
+const path = require('path');
 
 
 const app = express();
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src/views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1); // Azure passe par un proxy HTTPS : nécessaire pour le cookie secure
 

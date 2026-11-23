@@ -1,0 +1,7 @@
+<h1>Connexion agent</h1>
+<% if (locals.erreur) { %><p class="erreur"><%= erreur %></p><% } %>
+<form method="post" action="/agent/login">
+  <label>Email <input type="email" name="email" value="<%= locals.email || '' %>" required></label>
+  <label>Mot de passe <input type="password" name="motDePasse" required></label>
+  <button type="submit">Se connecter</button>
+</form>
