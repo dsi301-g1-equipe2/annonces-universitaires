@@ -9,7 +9,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  readonly apiUrl = 'http://localhost:3000/api';
+  readonly apiUrl = 'https://grp1-annonces-api-drc9cdemhpftduaw.austriaeast-01.azurewebsites.net';
   readonly etudiant = signal<Etudiant | null>(null);
 
   getToken(): string | null {

@@ -6,7 +6,7 @@ import { inject } from '@angular/core/primitives/di';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const token = auth.getToken();
-  const API_URL = 'http://localhost:3000/api';
+  const API_URL = auth.apiUrl;
   const requete =
     token && req.url.startsWith(API_URL)
       ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
