@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= locals.titre || 'Annonces' %> – Back office</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <strong>Annonces de la faculté</strong>
+    <% if (locals.agent) { %>
+      <form method="post" action="/agent/logout">
+        <span><%= agent.prenom %> <%= agent.nom %></span>
+        <button type="submit">Se déconnecter</button>
+      </form>
+    <% } %>
+  </header>
+  <main><%- include(page) %></main>
+  <footer>Contact Us</footer>
+</body>
+</html>
