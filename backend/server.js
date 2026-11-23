@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('trust proxy', 1); // Azure passe par un proxy HTTPS : nécessaire pour le cookie secure
 
 app.use(logger);
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 app.use(securite);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
