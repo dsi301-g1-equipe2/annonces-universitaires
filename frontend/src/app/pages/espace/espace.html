@@ -1,0 +1,12 @@
+<main class="espace">
+  @if (auth.etudiant(); as e) {
+    <h1>Bonjour {{ e.prenom }} {{ e.nom }}</h1>
+    <p>{{ e.emailInstitutionnel }}</p>
+  } @else if (erreur()) {
+    <p class="erreur" role="alert">{{ erreur() }}</p>
+  } @else {
+    <p>Chargement…</p>
+  }
+
+  <button type="button" (click)="auth.logout()">Se déconnecter</button>
+</main>

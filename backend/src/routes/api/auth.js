@@ -5,4 +5,6 @@ const { exiger } = require('../../middlewares/validation');
 
 router.post('/register', uploadCarte, exiger('nom', 'prenom', 'emailInstitutionnel', 'motDePasse'), c.register);
 
+router.post('/login', c.login);
+
 module.exports = router;

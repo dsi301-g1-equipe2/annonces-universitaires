@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RouterOutlet } from '@angular/router';
 
 const API_URL = 'https://grp1-annonces-api-drc9cdemhpftduaw.austriaeast-01.azurewebsites.net';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

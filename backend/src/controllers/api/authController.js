@@ -5,4 +5,9 @@ const register = async (req, res) => {
   res.status(201).json({ message: 'Inscription envoyée, en attente de validation par un agent', etudiant });
 };
 
-module.exports = { register };
+const login = async (req, res) => {
+  const { email, motDePasse } = req.body ?? {};
+  res.json(await etudiantService.login(email, motDePasse));
+};
+
+module.exports = { register, login };
