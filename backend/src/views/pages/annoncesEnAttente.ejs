@@ -1,0 +1,39 @@
+
+<h1>Modération des annonces</h1>
+
+<% if (message) { %>
+    <p class="success"><%= message %></p>
+<% } %>
+<% if (erreur) { %>
+    <p class="erreur"><%= erreur %></p>
+<% } %>
+<% if (annonces.length === 0) { %>
+    <p>Aucune annonce en attente.</p>
+<% } else { %>
+    <% annonces.forEach(annonce => { %>
+        <article>
+            <h3><%= annonce.titre %></h3>
+            <p><%= annonce.description %></p>
+            <p>
+                Catégorie :
+                <%= annonce.categorie ? annonce.categorie.nom : 'Non définie' %>
+            </p>
+            <p>Auteur :<%= annonce.auteur? annonce.auteur.prenom + ' ' + annonce.auteur.nom: 'Inconnu' %></p>
+            <a href="/agent/announcements/<%= annonce._id %>">Consulter l'annonce</a>
+        </article>
+        <hr>
+    <% }); %>
+<% } %>
+
+<% if (pagination.totalPages > 1) { %>
+    <nav>
+        <% if (pagination.page > 1) { %>
+            <a href="?page=<%= pagination.page - 1 %>">Précédent</a>
+        <% } %>
+        Page <%= pagination.page %> / <%= pagination.totalPages %>
+        <% if (pagination.page < pagination.totalPages) { %>
+            <a href="?page=<%= pagination.page + 1 %>">Suivant</a>
+        <% } %>
+    </nav>
+
+<% } %>

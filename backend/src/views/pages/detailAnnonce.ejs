@@ -1,0 +1,77 @@
+
+<h1>Détail de l'annonce</h1>
+
+<h2><%= annonce.titre %></h2>
+
+<p><strong>Description :</strong></p>
+<p><%= annonce.description %></p>
+
+<p><strong>Catégorie :</strong><%= annonce.categorie ? annonce.categorie.nom : 'Non définie' %></p>
+
+<p>
+    <strong>Auteur :</strong>
+    <%= annonce.auteur? annonce.auteur.prenom + ' ' + annonce.auteur.nom: 'Inconnu' %>
+</p>
+
+<p><strong>Statut :</strong> <%= annonce.statut %></p>
+
+<% if (annonce.medias && annonce.medias.length > 0) { %>
+
+    <h3>Médias</h3>
+
+    <% annonce.medias.forEach(media => { %>
+        <% if (media.type === 'PHOTO') { %>
+            <img src="<%= media.url %>" alt="Image de l'annonce" width="200">
+        <% } else { %>
+            <p>
+                <a href="<%= media.url %>">Voir la vidéo</a>
+            </p>
+        <% } %>
+    <% }); %>
+
+<% } %>
+
+<% if (annonce.statut === 'EN_ATTENTE') { %>
+
+    <hr>
+    <h3>Valider l'annonce</h3>
+    <form method="POST"
+          action="/agent/announcements/<%= annonce._id %>/validate">
+        <button type="submit">Valider</button>
+
+    </form>
+
+    <hr>
+
+    <h3>Refuser l'annonce</h3>
+
+    <form method="POST"
+          action="/agent/announcements/<%= annonce._id %>/reject">
+
+        <label for="motifRefus">Motif du refus :</label>
+
+        <textarea
+            id="motifRefus"
+            name="motifRefus"
+            maxlength="500"
+            required>
+        </textarea>
+
+        <button type="submit">Refuser</button>
+
+    </form>
+
+<% } else { %>
+    <p>Cette annonce a déjà été traitée.</p>
+    <% if (annonce.motifRefus) { %>
+        <p>
+            Motif du refus :
+            <%= annonce.motifRefus %>
+        </p>
+    <% } %>
+
+<% } %>
+
+<a href="/agent/announcements/pending">
+    Retour aux annonces
+</a>
