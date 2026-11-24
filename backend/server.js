@@ -19,6 +19,7 @@ app.set('trust proxy', 1); // Azure passe par un proxy HTTPS : nécessaire pour 
 app.use(logger);
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 app.use(securite);
+app.use(require('cors')({ origin: ['http://localhost:4200', 'https://dsi301-g1-equipe2.github.io'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
