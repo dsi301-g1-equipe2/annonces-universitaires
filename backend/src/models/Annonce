@@ -1,0 +1,52 @@
+const mongoose = require('mongoose');
+
+const STATUTS = ['EN_ATTENTE', 'PUBLIEE', 'REFUSEE', 'MASQUEE', 'RETROUVE', 'TERMINE'];
+
+const annonceSchema = new mongoose.Schema(
+  {
+    titre: { type: String, required: [true, 'Titre requis'], trim: true, minlength: 3, maxlength: 100 },
+    description: { type: String, required: [true, 'Description requise'], trim: true, minlength: 10, maxlength: 2000 },
+    date: { type: Date, default: Date.now },
+    statut: { type: String, enum: { values: STATUTS, message: 'Statut invalide' }, default: 'EN_ATTENTE', index: true },
+    motifRefus: {
+      type: String,
+      trim: true,
+      required: [function () { return this.statut === 'REFUSEE'; }, 'Motif de refus requis'],
+    },
+    datePublication: Date,
+    auteur: { type: mongoose.Schema.Types.ObjectId, ref: 'Etudiant', required: [true, 'Auteur requis'], index: true },
+    categorie: { type: mongoose.Schema.Types.ObjectId, ref: 'Categorie', required: [true, 'Catégorie requise'] },
+    traitePar: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' }, // même logique que Etudiant, à retirer si inutile
+  },
+  { timestamps: true }
+);
+
+annonceSchema.index({ titre: 'text', description: 'text' });
+
+annonceSchema.statics.STATUTS = STATUTS;
+
+annonceSchema.statics.rechercherParMotCle = function (mot) {
+  return this.find({ statut: 'PUBLIEE', $text: { $search: mot } });
+};
+
+annonceSchema.methods.valider = function (agentId) {
+  this.statut = 'PUBLIEE';
+  this.datePublication = new Date();
+  this.motifRefus = undefined;
+  this.traitePar = agentId;
+  return this.save();
+};
+
+annonceSchema.methods.refuser = function (motif, agentId) {
+  this.statut = 'REFUSEE';
+  this.motifRefus = motif;
+  this.traitePar = agentId;
+  return this.save();
+};
+
+annonceSchema.methods.changerStatut = function (statut) {
+  this.statut = statut;
+  return this.save();
+};
+
+module.exports = mongoose.model('Annonce', annonceSchema);
